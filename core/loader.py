@@ -11,7 +11,14 @@ class DataLoader:
     Não aplica limpeza, regras de negócio ou análises.
     """
 
-    def load(self, file_path: str | Path) -> pd.DataFrame:
+    def load(
+        self, 
+        file_path: str | Path
+    ) -> pd.DataFrame:
+        """
+        Carrega um arquivo tabular suportado e retorna
+        um DataFrame.
+        """
         path = Path(file_path)
 
         self._validate_file(path)
@@ -26,13 +33,32 @@ class DataLoader:
             f"Formato de arquivo não suportado: {path.suffix}"
         )
 
-    def _load_csv(self, path: Path) -> pd.DataFrame:
+    def _load_csv(
+        self, 
+        path: Path
+    ) -> pd.DataFrame:
+        """
+        Carrega um arquivo CSV e retorna um DataFrame.
+        """
         return pd.read_csv(path)
 
-    def _load_xlsx(self, path: Path) -> pd.DataFrame:
+    def _load_xlsx(
+        self, 
+        path: Path
+    ) -> pd.DataFrame:
+        """
+        Carrega um arquivo XLSX e retorna um DataFrame.
+        """
         return pd.read_excel(path)
 
-    def _validate_file(self, path: Path) -> None:
+    def _validate_file(
+        self, 
+        path: Path
+    ) -> None:
+        """
+        Valida se o caminho informado existe e representa
+        um arquivo.
+        """
         if not path.exists():
             raise FileNotFoundError(
                 f"Arquivo não encontrado: {path}"
