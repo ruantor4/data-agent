@@ -18,9 +18,29 @@ raw_profile = profiler.profile(df)
 print("PROFILE RAW")
 pprint(raw_profile)
 
-cleaned_df = cleaner.clean(df)
 
-cleaned_profile = profiler.profile(cleaned_df)
+cleaned_df = cleaner.clean(
+    df,
+    numeric_columns=[
+        "distancia_km",
+        "valor_pedido",
+        "tempo_entrega_min",
+        "itens"
+    ],
+    date_columns=[
+        "data_pedido"
+    ]
+)
+
+cleaned_profile = profiler.profile(
+    cleaned_df
+)
 
 print("\nPROFILE CLEANED")
 pprint(cleaned_profile)
+print(
+    df.loc[
+        cleaned_df["data_pedido"].isna(),
+        "data_pedido"
+    ]
+)
