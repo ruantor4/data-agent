@@ -4,10 +4,10 @@
 venv/
 
 # Cache e arquivos compilados do Python
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
-
+*.pyc
 # Variáveis de ambiente
 .env
 .env.*
