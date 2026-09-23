@@ -5,12 +5,14 @@ from core.profiler import DataProfiler
 from core.cleaner import DataCleaner
 from core.relationship_detector import RelationshipDetector
 from core.analysis_engine import AnalysisEngine
+from core.context_builder import ContextBuilder
 
 loader = DataLoader()
 profiler = DataProfiler()
 cleaner = DataCleaner()
 detector = RelationshipDetector()
 analysis_engine = AnalysisEngine()
+context_builder = ContextBuilder()
 
 # PEDIDOS
 
@@ -141,6 +143,25 @@ entregas_analysis = analysis_engine.analyze(
     entregas_cleaned_df
 )
 
+profiles = {
+    "pedidos": cleaned_profile,
+    "pagamentos": pagamentos_cleaned_profile,
+    "itens": itens_cleaned_profile,
+    "entregas": entregas_cleaned_profile
+}
+
+analyses = {
+    "pedidos": pedidos_analysis,
+    "pagamentos": pagamentos_analysis,
+    "itens": itens_analysis,
+    "entregas": entregas_analysis
+}
+
+context = context_builder.build(
+    profiles=profiles,
+    analyses=analyses,
+    relationships=relationships
+)
 # RESULTADOS
 
 print("\nPEDIDOS - PROFILE RAW")
@@ -181,3 +202,6 @@ pprint(itens_analysis)
 
 print("\nENTREGAS - ANALYSIS")
 pprint(entregas_analysis)
+
+print("\nCONTEXTO CONSOLIDADO")
+pprint(context)
