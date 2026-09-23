@@ -1,3 +1,4 @@
+import json
 from pprint import pprint
 
 from core.loader import DataLoader
@@ -6,6 +7,12 @@ from core.cleaner import DataCleaner
 from core.relationship_detector import RelationshipDetector
 from core.analysis_engine import AnalysisEngine
 from core.context_builder import ContextBuilder
+from core.gemini_client import GeminiClient
+
+
+# ==========================================================
+# INSTÂNCIAS
+# ==========================================================
 
 loader = DataLoader()
 profiler = DataProfiler()
@@ -13,8 +20,12 @@ cleaner = DataCleaner()
 detector = RelationshipDetector()
 analysis_engine = AnalysisEngine()
 context_builder = ContextBuilder()
+gemini_client = GeminiClient()
 
+
+# ==========================================================
 # PEDIDOS
+# ==========================================================
 
 df = loader.load(
     "data/raw/pedidos_delivery_cliente.csv"
@@ -42,7 +53,9 @@ cleaned_profile = profiler.profile(
 )
 
 
+# ==========================================================
 # PAGAMENTOS
+# ==========================================================
 
 pagamentos_df = loader.load(
     "data/raw/pagamentos_delivery.csv"
@@ -65,7 +78,9 @@ pagamentos_cleaned_profile = profiler.profile(
 )
 
 
+# ==========================================================
 # ITENS
+# ==========================================================
 
 itens_df = loader.load(
     "data/raw/itens_delivery.csv"
@@ -89,7 +104,9 @@ itens_cleaned_profile = profiler.profile(
 )
 
 
+# ==========================================================
 # ENTREGAS
+# ==========================================================
 
 entregas_df = loader.load(
     "data/raw/entregas_delivery.csv"
@@ -114,7 +131,9 @@ entregas_cleaned_profile = profiler.profile(
 )
 
 
-# RELACIONAMENTOS
+# ==========================================================
+# DATASETS LIMPOS
+# ==========================================================
 
 datasets = {
     "pedidos": cleaned_df,
@@ -123,9 +142,19 @@ datasets = {
     "entregas": entregas_cleaned_df
 }
 
+
+# ==========================================================
+# RELACIONAMENTOS
+# ==========================================================
+
 relationships = detector.detect(
     datasets
 )
+
+
+# ==========================================================
+# ANÁLISES
+# ==========================================================
 
 pedidos_analysis = analysis_engine.analyze(
     cleaned_df
@@ -143,12 +172,22 @@ entregas_analysis = analysis_engine.analyze(
     entregas_cleaned_df
 )
 
+
+# ==========================================================
+# PROFILES CONSOLIDADOS
+# ==========================================================
+
 profiles = {
     "pedidos": cleaned_profile,
     "pagamentos": pagamentos_cleaned_profile,
     "itens": itens_cleaned_profile,
     "entregas": entregas_cleaned_profile
 }
+
+
+# ==========================================================
+# ANÁLISES CONSOLIDADAS
+# ==========================================================
 
 analyses = {
     "pedidos": pedidos_analysis,
@@ -157,12 +196,77 @@ analyses = {
     "entregas": entregas_analysis
 }
 
+
+# ==========================================================
+# CONTEXTO CONSOLIDADO
+# ==========================================================
+
 context = context_builder.build(
     profiles=profiles,
     analyses=analyses,
     relationships=relationships
 )
+
+
+# ==========================================================
+# CONTEXTO PARA O GEMINI
+# ==========================================================
+
+context_json = json.dumps(
+    context,
+    ensure_ascii=False,
+    indent=2
+)
+
+
+# ==========================================================
+# PROMPT TEMPORÁRIO DE VALIDAÇÃO
+# ==========================================================
+
+prompt = f"""
+Analise o contexto de dados abaixo.
+
+Regras obrigatórias:
+
+- use somente as informações fornecidas;
+- não invente informações ausentes;
+- não assuma regras de negócio que não foram fornecidas;
+- não assuma que uma coluna é chave primária ou estrangeira;
+- não classifique valores como inválidos sem uma regra que comprove isso;
+- não classifique valores como outliers se o contexto não fornecer
+  uma medida estatística de outlier;
+- valores mínimos, máximos ou muito diferentes da mediana devem ser
+  descritos apenas como valores extremos que merecem investigação;
+- não atribua significado especial a códigos ou identificadores;
+- não trate correlação como causalidade;
+- relacionamentos com status "candidate" são apenas candidatos
+  e nunca relacionamentos confirmados;
+- diferencie claramente:
+  1. evidência observada;
+  2. interpretação possível;
+  3. informação que não pode ser determinada;
+- quando uma conclusão depender de informação não fornecida,
+  declare explicitamente que ela precisa ser validada;
+- seja objetivo e técnico.
+
+Contexto:
+
+{context_json}
+"""
+
+
+# ==========================================================
+# GEMINI
+# ==========================================================
+
+gemini_response = gemini_client.generate(
+    prompt
+)
+
+
+# ==========================================================
 # RESULTADOS
+# ==========================================================
 
 print("\nPEDIDOS - PROFILE RAW")
 pprint(raw_profile)
@@ -205,3 +309,6 @@ pprint(entregas_analysis)
 
 print("\nCONTEXTO CONSOLIDADO")
 pprint(context)
+
+print("\nRESPOSTA GEMINI")
+print(gemini_response)
