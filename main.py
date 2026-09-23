@@ -1,5 +1,5 @@
 from pprint import pprint
-import pandas as pd
+
 from core.loader import DataLoader
 from core.profiler import DataProfiler
 from core.cleaner import DataCleaner
