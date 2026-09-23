@@ -161,15 +161,41 @@ class DataCleaner:
         Converte e normaliza as colunas informadas
         para valores datetime.
         """
-    
+
         for column in columns:
 
             if column in df.columns:
-                df[column] = pd.to_datetime(
-                    df[column],
+
+                values = (
+                    df[column]
+                    .astype("string")
+                    .str.strip()
+                )
+
+                iso_mask = values.str.match(
+                    r"^\d{4}-\d{2}-\d{2}$",
+                    na=False
+                )
+
+                converted = pd.Series(
+                    pd.NaT,
+                    index=df.index,
+                    dtype="datetime64[ns]"
+                )
+
+                converted.loc[iso_mask] = pd.to_datetime(
+                    values.loc[iso_mask],
+                    errors="coerce",
+                    format="%Y-%m-%d"
+                )
+
+                converted.loc[~iso_mask] = pd.to_datetime(
+                    values.loc[~iso_mask],
                     errors="coerce",
                     format="mixed",
                     dayfirst=dayfirst
                 )
+
+                df[column] = converted
 
         return df

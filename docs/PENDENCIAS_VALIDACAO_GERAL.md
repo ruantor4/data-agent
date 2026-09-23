@@ -1153,35 +1153,35 @@ Antes de considerar os módulos atuais tecnicamente fechados:
 
 \`\`\`text
 
-[ ] Loader: encoding
+[x] Loader: encoding
 
-[ ] Loader: delimitadores
+[x] Loader: delimitadores
 
-[ ] Loader: XLSX controlado
+[x] Loader: XLSX controlado
 
-[ ] Loader: erros controlados
+[x] Loader: erros controlados
 
-[ ] Profiler: DataFrame vazio
+[x] Profiler: DataFrame vazio
 
-[ ] Profiler: coluna totalmente nula
+[x] Profiler: coluna totalmente nula
 
-[ ] Profiler: tipos conhecidos
+[x] Profiler: tipos conhecidos
 
-[ ] Profiler: frequências controladas
+[x] Profiler: frequências controladas
 
-[ ] Profiler: dataset manual de referência
+[x] Profiler: dataset manual de referência
 
-[ ] Cleaner: comprovar imutabilidade do DataFrame original
+[x] Cleaner: comprovar imutabilidade do DataFrame original
 
-[ ] Cleaner: decimal_separator
+[x] Cleaner: decimal_separator
 
-[ ] Cleaner: thousands_separator
+[x] Cleaner: thousands_separator
 
-[ ] Cleaner: valores numéricos inválidos
+[x] Cleaner: valores numéricos inválidos
 
-[ ] Cleaner: datas em cenários controlados
+[x] Cleaner: datas em cenários controlados
 
-[ ] Cleaner: coluna inexistente
+[x] Cleaner: coluna inexistente
 
 [ ] Cleaner: decidir futuramente como registrar transformações
 
