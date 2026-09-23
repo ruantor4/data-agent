@@ -4,13 +4,13 @@ from core.loader import DataLoader
 from core.profiler import DataProfiler
 from core.cleaner import DataCleaner
 from core.relationship_detector import RelationshipDetector
-
+from core.analysis_engine import AnalysisEngine
 
 loader = DataLoader()
 profiler = DataProfiler()
 cleaner = DataCleaner()
 detector = RelationshipDetector()
-
+analysis_engine = AnalysisEngine()
 
 # PEDIDOS
 
@@ -125,6 +125,21 @@ relationships = detector.detect(
     datasets
 )
 
+pedidos_analysis = analysis_engine.analyze(
+    cleaned_df
+)
+
+pagamentos_analysis = analysis_engine.analyze(
+    pagamentos_cleaned_df
+)
+
+itens_analysis = analysis_engine.analyze(
+    itens_cleaned_df
+)
+
+entregas_analysis = analysis_engine.analyze(
+    entregas_cleaned_df
+)
 
 # RESULTADOS
 
@@ -154,3 +169,15 @@ pprint(entregas_cleaned_profile)
 
 print("\nRELACIONAMENTOS")
 pprint(relationships)
+
+print("\nPEDIDOS - ANALYSIS")
+pprint(pedidos_analysis)
+
+print("\nPAGAMENTOS - ANALYSIS")
+pprint(pagamentos_analysis)
+
+print("\nITENS - ANALYSIS")
+pprint(itens_analysis)
+
+print("\nENTREGAS - ANALYSIS")
+pprint(entregas_analysis)

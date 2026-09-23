@@ -1209,6 +1209,22 @@ Antes de considerar os módulos atuais tecnicamente fechados:
 
 [ ] RelationshipDetector: falsos negativos fora do conjunto controlado
 
+[x] AnalysisEngine: DataFrame vazio
+[x] AnalysisEngine: análise numérica
+[x] AnalysisEngine: coluna numérica totalmente nula
+[x] AnalysisEngine: uma observação numérica
+[x] AnalysisEngine: análise categórica
+[x] AnalysisEngine: booleanos
+[x] AnalysisEngine: análise temporal
+[x] AnalysisEngine: coluna temporal totalmente nula
+[x] AnalysisEngine: correlação controlada
+[x] AnalysisEngine: uma única coluna numérica
+[x] AnalysisEngine: separação de tipos
+[x] AnalysisEngine: imutabilidade do DataFrame
+[x] AnalysisEngine: dataset manual de referência
+[x] AnalysisEngine: limite de cardinalidade categórica
+[x] AnalysisEngine: integração com datasets reais
+[x] AnalysisEngine: ausência de regressão nos relacionamentos
 \`\`\`
 
 \---
